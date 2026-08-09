@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Yopish</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="stat-pill">
+      <span class="icon">🪙</span>
+      <span id="coinTop">0</span>
+    </div>
+    <div class="stat-pill" id="energyPill">
+      <span class="icon">⚡</span>
+      <span id="energyTop">0</span>/<span id="energyMaxTop">500</span>
+    </div>
+  </div>
+
+  <!-- ===================== TAP SCREEN ===================== -->
+  <section id="screen-tap" class="screen active">
+    <div class="coin-count" id="coinCount">0</div>
+    <div class="tap-multiplier" id="tapMultiplier">Tap x1</div>
+
+    <div class="tap-wrap">
+      <button id="tapCoin" class="tap-coin">Y</button>
+    </div>
+
+    <div class="energy-box">
+      <div class="energy-row">
+        <span>⚡ ENERGIYA</span>
+        <span><b id="energyNow">500</b>/<span id="energyMax">500</span></span>
+      </div>
+      <div class="energy-bar"><div id="energyFill" class="energy-fill"></div></div>
+    </div>
+  </section>
+
+  <!-- ===================== BOOST / SHOP SCREEN ===================== -->
+  <section id="screen-boost" class="screen">
+    <h2 class="section-title">MINE COIN DO'KON</h2>
+    <p class="section-sub">Tangalar bilan xarid qiling</p>
+    <div id="shopList" class="shop-grid"></div>
+  </section>
+
+  <!-- ===================== TASKS SCREEN ===================== -->
+  <section id="screen-tasks" class="screen">
+    <div class="daily-bonus-card">
+      <div class="daily-bonus-row">
+        <div>
+          <div class="label-sm">KUNLIK BONUS</div>
+          <input id="dailyCodeInput" placeholder="Kodni kiriting" />
+        </div>
+        <button id="claimDailyBtn" class="btn btn-yellow">Tekshirish</button>
+      </div>
+      <div id="dailyMsg" class="msg"></div>
+    </div>
+
+    <div class="referral-card">
+      <div class="label-sm">MENING TAKLIF KODIM</div>
+      <div class="code-row">
+        <span id="myInviteCode">------</span>
+        <button id="copyCodeBtn" class="btn-icon">📋</button>
+      </div>
+      <input id="friendCodeInput" placeholder="Do'stingiz kodi (ABCDE)" />
+      <button id="applyReferralBtn" class="btn btn-purple">Kodni qo'llash (+500 🪙 ikkalangizga)</button>
+      <div id="referralMsg" class="msg"></div>
+    </div>
+
+    <h3 class="section-title">Vazifalar</h3>
+    <div id="tasksList" class="tasks-list"></div>
+  </section>
+
+  <!-- ===================== AUCTION SCREEN ===================== -->
+  <section id="screen-auction" class="screen">
+    <div class="tabs-inline">
+      <button id="auctionActiveTab" class="tab-btn active">FAOL</button>
+      <button id="auctionFinishedTab" class="tab-btn">TUGAGAN</button>
+    </div>
+    <div id="auctionList" class="auction-list"></div>
+    <div id="adminCreateAuction" class="admin-only" style="display:none">
+      <h3 class="section-title">Yangi auksion (Admin)</h3>
+      <input id="aucTitle" placeholder="Nomi" />
+      <input id="aucStart" placeholder="Boshlang'ich narx (coin)" type="number" />
+      <input id="aucDuration" placeholder="Davomiyligi (daqiqa)" type="number" />
+      <button id="aucCreateBtn" class="btn btn-yellow">Yaratish</button>
+    </div>
+  </section>
+
+  <!-- ===================== GAME (CHECKERS) SCREEN ===================== -->
+  <section id="screen-game" class="screen">
+    <h2 class="section-title">Shashka</h2>
+
+    <div id="checkersLobby">
+      <div class="stat-grid">
+        <div class="stat-box"><div class="stat-val" id="statGames">0</div><div class="stat-lbl">GAMES</div></div>
+        <div class="stat-box"><div class="stat-val" id="statWins">0</div><div class="stat-lbl">WINS</div></div>
+        <div class="stat-box"><div class="stat-val" id="statLosses">0</div><div class="stat-lbl">LOSSES</div></div>
+        <div class="stat-box"><div class="stat-val" id="statRank">Rookie</div><div class="stat-lbl">RANK</div></div>
+      </div>
+
+      <div class="create-game-card">
+        <h3>O'yin yaratish</h3>
+        <p class="section-sub">Raqib kirib, ikkala tomon ready bo'lganda boshlanadi</p>
+        <button id="createGameBtn" class="btn btn-yellow">+ O'YIN YARATISH</button>
+        <div class="join-row">
+          <input id="joinGameId" placeholder="O'yin kodi bilan qo'shilish" />
+          <button id="joinGameBtn" class="btn btn-purple">Qo'shilish</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="checkersBoardWrap" style="display:none">
+      <div class="game-info-row">
+        <span id="gameIdLabel"></span>
+        <span id="turnLabel"></span>
+      </div>
+      <div id="checkersBoard" class="checkers-board"></div>
+      <button id="readyBtn" class="btn btn-yellow">READY</button>
+      <button id="leaveGameBtn" class="btn btn-gray">Chiqish</button>
+    </div>
+  </section>
+
+  <!-- ===================== PROFILE SCREEN ===================== -->
+  <section id="screen-profile" class="screen">
+    <div class="profile-card">
+      <div class="label-sm">Coin balans</div>
+      <div class="profile-coins" id="profileCoins">0</div>
+    </div>
+    <div class="menu-list">
+      <div class="menu-item" data-target="screen-tasks">🎁 Kunlik Bonus va Vazifalar <span>›</span></div>
+      <div class="menu-item" data-target="screen-auction">🏆 Auksion / Reyting <span>›</span></div>
+      <div class="menu-item admin-only" id="openAdminPanel" style="display:none">⚙️ Admin panel <span>›</span></div>
+    </div>
+  </section>
+
+  <!-- ===================== ADMIN PANEL (faqat admin uchun) ===================== -->
+  <section id="screen-admin" class="screen">
+    <h2 class="section-title">Admin panel</h2>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="stat-val" id="adminTotalUsers">0</div><div class="stat-lbl">USERS</div></div>
+      <div class="stat-box"><div class="stat-val" id="adminTotalCoins">0</div><div class="stat-lbl">COINS</div></div>
+      <div class="stat-box"><div class="stat-val" id="adminActiveToday">0</div><div class="stat-lbl">TODAY</div></div>
+      <div class="stat-box"><div class="stat-val" id="adminTotalTasks">0</div><div class="stat-lbl">TASKS</div></div>
+    </div>
+
+    <h3 class="section-title">Kunlik bonus kodi</h3>
+    <div class="join-row">
+      <input id="adminDailyCode" placeholder="Yangi kod" />
+      <button id="adminSetCodeBtn" class="btn btn-yellow">Saqlash</button>
+    </div>
+
+    <h3 class="section-title">Yangi vazifa yaratish</h3>
+    <input id="adminTaskTitle" placeholder="Vazifa nomi" />
+    <input id="adminTaskLink" placeholder="Havola (https://t.me/...)" />
+    <input id="adminTaskReward" placeholder="Mukofot (coin)" type="number" />
+    <button id="adminCreateTaskBtn" class="btn btn-purple">Vazifa qo'shish</button>
+
+    <h3 class="section-title">Foydalanuvchilar (top 200)</h3>
+    <div id="adminUsersList" class="admin-users-list"></div>
+  </section>
+
+  <!-- ===================== BOTTOM NAV ===================== -->
+  <nav class="bottom-nav">
+    <button class="nav-btn" data-screen="screen-boost">🚀<span>BOOST</span></button>
+    <button class="nav-btn" data-screen="screen-tasks">✅<span>VAZIFALAR</span></button>
+    <button class="nav-btn active" data-screen="screen-tap">🎯<span>BOSISH</span></button>
+    <button class="nav-btn" data-screen="screen-auction">⚖️<span>AUKSION</span></button>
+    <button class="nav-btn" data-screen="screen-profile">👤<span>PROFIL</span></button>
+  </nav>
+  <nav class="bottom-nav-secondary">
+    <button class="nav-btn" data-screen="screen-game">🎮<span>GAME</span></button>
+    <button class="nav-btn admin-only" data-screen="screen-admin" style="display:none">⚙️<span>ADMIN</span></button>
+  </nav>
+
+</div>
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<script src="app.js"></script>
+</body>
+  </html>
